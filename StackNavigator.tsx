@@ -1,27 +1,29 @@
 // StackNavigator.tsx
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HomeScreen from "./screens/HomeScreen";
-import SearchScreen from "./screens/SearchScreen";
-import LibraryScreen from "./screens/LibraryScreen";
-import StatsScreen from "./screens/StatsScreen";
-import ProfileScreen from "./screens/ProfileScreen";
-import LoginScreen from "./screens/LoginScreen";
-import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
 
-import { createStackNavigator } from "@react-navigation/stack";
-import { NavigationContainer } from "@react-navigation/native";
+import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
+import HomeScreen from './screens/HomeScreen';
+import SearchScreen from './screens/SearchScreen';
+import SongDetailScreen from './screens/SongDetailScreen';
+import LibraryScreen from './screens/LibraryScreen';
+import StatsScreen from './screens/StatsScreen';
+import ProfileScreen from './screens/ProfileScreen';
+import LoginScreen from './screens/LoginScreen';
+import AlbumDetailsScreen from './screens/AlbumDetailsScreen';
+import {createStackNavigator} from '@react-navigation/stack';
+import {NavigationContainer} from '@react-navigation/native';
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import { TouchableOpacity, Image, View, StyleSheet } from "react-native";
-import { Colors } from './theme';
+import {TouchableOpacity, Image, View, StyleSheet} from 'react-native';
+import {Colors} from './theme';
 
 const Tab = createBottomTabNavigator();
 
-function ProfileAvatar({ navigation }) {
+function ProfileAvatar({navigation}) {
   return (
     <TouchableOpacity
       onPress={() => navigation.navigate('Profile')}
-      style={styles.avatarContainer}
-    >
+
+      style={styles.avatarContainer}>
+      
       <Image
         source={require('./assets/images/UCS_logo.png')}
         style={styles.avatar}
@@ -31,14 +33,14 @@ function ProfileAvatar({ navigation }) {
 }
 
 // Common header setup for all screens
-const screenOptions = ({ navigation }) => ({
+const screenOptions = ({navigation}) => ({
   headerStyle: {
     backgroundColor: Colors.cardBackground,
     elevation: 0,
   },
   headerTintColor: Colors.text,
   headerLeft: () => <ProfileAvatar navigation={navigation} />,
-  headerTitle: "",
+  headerTitle: '',
 });
 
 function BottomTabs() {
@@ -55,16 +57,17 @@ function BottomTabs() {
         tabBarInactiveTintColor: Colors.textSecondary,
         tabBarLabelStyle: {
           marginTop: -15, // 负边距拉近与图标的距离
-          textAlign: 'center'
+          textAlign: 'center',
         },
       }}
     >
+
       <Tab.Screen
         name="Home"
         component={HomeScreen}
-        options={({ navigation }) => ({
-          ...screenOptions({ navigation }),
-          tabBarIcon: ({ focused, color }) => (
+        options={({navigation}) => ({
+          ...screenOptions({navigation}),
+          tabBarIcon: ({focused, color}) => (
             <MaterialCommunityIcons
               name="home"
               size={focused ? 28 : 24}
@@ -76,9 +79,19 @@ function BottomTabs() {
       <Tab.Screen
         name="Search"
         component={SearchScreen}
-        options={({ navigation }) => ({
-          ...screenOptions({ navigation }),
-          tabBarIcon: ({ focused, color }) => (
+        options={({navigation, route}) => ({
+          ...screenOptions({navigation}),
+          // This ensures tab bar visibility is controlled by the searchFocused state
+          tabBarStyle:
+            route.params?.searchFocused === true
+              ? {display: 'none'}
+              : {
+                  backgroundColor: Colors.background,
+                  borderTopColor: Colors.background,
+                  height: 60,
+                  paddingBottom: 10,
+                },
+          tabBarIcon: ({focused, color}) => (
             <MaterialCommunityIcons
               name="magnify"
               size={focused ? 28 : 24}
@@ -90,9 +103,9 @@ function BottomTabs() {
       <Tab.Screen
         name="Library"
         component={LibraryScreen}
-        options={({ navigation }) => ({
-          ...screenOptions({ navigation }),
-          tabBarIcon: ({ focused, color }) => (
+        options={({navigation}) => ({
+          ...screenOptions({navigation}),
+          tabBarIcon: ({focused, color}) => (
             <MaterialCommunityIcons
               name="bookshelf"
               size={focused ? 28 : 24}
@@ -104,9 +117,9 @@ function BottomTabs() {
       <Tab.Screen
         name="Stats"
         component={StatsScreen}
-        options={({ navigation }) => ({
-          ...screenOptions({ navigation }),
-          tabBarIcon: ({ focused, color }) => (
+        options={({navigation}) => ({
+          ...screenOptions({navigation}),
+          tabBarIcon: ({focused, color}) => (
             <MaterialCommunityIcons
               name="chart-bar"
               size={focused ? 28 : 24}
@@ -143,6 +156,14 @@ function Navigation() {
               backgroundColor: Colors.cardBackground,
             },
             headerTintColor: Colors.text,
+          }}
+        />
+
+         <Stack.Screen 
+          name="SongDetail" 
+          component={SongDetailScreen} 
+          options={{
+            headerShown: false,  // We'll handle the header in the component
           }}
         />
         <Stack.Screen  

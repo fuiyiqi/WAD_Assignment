@@ -383,7 +383,6 @@ export const getTopAlbums = async (timeRange = 'medium_term', limit = 20) => {
     console.error('Error extracting top albums:', error);
     return [];
   }
-};
 
 // get album details for displaying songs in album screen
 export const getAlbumDetails = async albumId => {
